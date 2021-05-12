@@ -201,7 +201,10 @@ public abstract class Search {
             System.out.println("Branch and Bound search!");
             branchAndBound();
         }
-        else AStar();
+        else {
+            System.out.println("AStar search!");
+            AStar();
+        }
    }
 
     private void depthFirst () {
