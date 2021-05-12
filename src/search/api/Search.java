@@ -17,17 +17,22 @@ public abstract class Search {
   protected ArrayList<SearchNode> closed; //closed - .......
   protected ArrayList<SearchNode> successorNodes; //used in expand & vetSuccessors
 
+    protected SearchNode goalNode;
+    protected TerrainMap tmp;
   /**
   * run a search
   * @param initState initial state
   * @param strat - String specifying strategy
   * @return indication of success or failure
   */
-  public  String runSearch (SearchState initState, String strat) {
+  public  String runSearch (SearchState initState, SearchState goalState, TerrainMap tmpInput, String strat) {
 
     initNode = new SearchNode(initState,0,0); // create initial node
     initNode.setGlobalCost(0); //change from search2
 
+      goalNode = new SearchNode(goalState, 0);
+      goalNode.setGlobalCost(0);
+      tmp = tmpInput;
 	  //change from search1 - print strategy
 	  System.out.println("Starting "+strat+" Search");
 

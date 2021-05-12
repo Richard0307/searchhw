@@ -36,6 +36,16 @@ public  class SearchNode {
     localCost=lc;  //change from search2
     estRemCost=erc;
   }
+  public SearchNode(SearchState s, int lc) {
+    state = (SearchState) s;
+    localCost = lc; // change from search2
+  }
+
+  public SearchNode(SearchState s) {
+    state = (SearchState) s;
+    localCost = s.localCost; // change from search2
+  }
+
 
   /**
    * accessor for state

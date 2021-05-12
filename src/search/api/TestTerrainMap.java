@@ -27,9 +27,15 @@ public class TestTerrainMap {
 
   public static void main(String[] arg) {
 
-    TerrainMap tm = new TerrainMap("tmc.pgm");
+    TerrainMap tm = new TerrainMap("G:\\ml\\SearchAlgorithm3\\src\\search\\api\\tmc.pgm");
 
+    int w = tm.getWidth();
+    int h = tm.getHeight();
+    System.out.println(w);
+    System.out.println(h);
     System.out.println(tm.getWidth());
+    System.out.println(tm.getHeight());
+    System.out.println(tm.getDepth());
     System.out.println(tm.getTmap()[7][2]);
 
   }

@@ -18,6 +18,8 @@ public abstract class SearchState {
   // A*
   protected int estRemCost;
 
+  protected Coords point;
+
   /**
   * accessor for local cost
   */
