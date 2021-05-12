@@ -17,8 +17,26 @@ public class RunAStarSearch {
         SearchState initState = new SearchStateAStarCost(0, start);
         SearchState goalState = new SearchStateAStarCost(0, end);
 
-        BBSearch bbSearch = new BBSearch();
-        String result = bbSearch.runSearch(initState, goalState, tm, "AStar");
-        System.out.println(result);
+        AStarSearch AStarSearch = new AStarSearch();
+        AStarSearch.runSearchAStar(initState, goalState, tm, "AStar", "Manhattan");
+        double efficiency_MD = AStarSearch.efficiency;
+
+        AStarSearch.runSearchAStar(initState, goalState, tm, "AStar", "Euclidean");
+        double efficiency_ED = AStarSearch.efficiency;
+
+        AStarSearch.runSearchAStar(initState, goalState, tm, "AStar", "HeightDifference");
+        double efficiency_HD = AStarSearch.efficiency;
+
+        AStarSearch.runSearchAStar(initState, goalState, tm, "AStar", "ManhattanWithHeight");
+        double efficiency_MDHD = AStarSearch.efficiency;
+
+        AStarSearch.runSearchAStar(initState, goalState, tm, "AStar", "EuclideanWithHeight");
+        double efficiency_EDHD = AStarSearch.efficiency;
+
+        System.out.println("efficiency_MD " + efficiency_MD);
+        System.out.println("efficiency_ED " + efficiency_ED);
+        System.out.println("efficiency_HD " + efficiency_HD);
+        System.out.println("efficiency_MDHD " + efficiency_MDHD);
+        System.out.println("efficiency_EDHD " + efficiency_EDHD);
     }
 }

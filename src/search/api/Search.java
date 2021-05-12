@@ -19,6 +19,9 @@ public abstract class Search {
 
     protected SearchNode goalNode;
     protected TerrainMap tmp;
+    protected String AStarHCost;
+    protected double efficiency;
+
   /**
   * run a search
   * @param initState initial state
@@ -67,6 +70,50 @@ public abstract class Search {
   	}
   	return "Search Fails";  // out of the while loop - failure
 	}
+
+    public  String runSearchAStar (SearchState initState, SearchState goalState, TerrainMap tmpInput, String strat, String AStarHCostMethod) {
+
+        initNode = new SearchNode(initState,0,0); // create initial node
+        initNode.setGlobalCost(0); //change from search2
+
+        goalNode = new SearchNode(goalState, 0, 0);
+        goalNode.setGlobalCost(0);
+        tmp = tmpInput;
+        AStarHCost = AStarHCostMethod;
+        //change from search1 - print strategy
+        System.out.println("Starting "+strat+" Search");
+
+        open = new ArrayList<SearchNode>(); // initial open, closed
+        open.add(initNode);
+        closed=new ArrayList<SearchNode>();
+
+        int numIteration = 1;
+
+        while (!open.isEmpty()) {
+
+            // print contents of open
+            System.out.println("-------------------------");
+            System.out.println("iteration no " + numIteration);
+            System.out.println("open is");
+            for (SearchNode nn: open) {
+                String nodestr = nn.toString();
+                System.out.println(nodestr);
+            }
+
+            selectNode(strat); // change from search1 -selectNode selects next node given strategy,
+
+            // makes it currentNode & removes it from open
+            System.out.println("Current node: "+currentNode.toString());
+
+            if (currentNode.goalPredicate(this)) return reportSuccess();  //success
+            //change from search1 - call reportSuccess
+
+            expand(); // go again
+            closed.add(currentNode); // put current node on closed
+            numIteration = numIteration + 1;
+        }
+        return "Search Fails";  // out of the while loop - failure
+    }
 
   /**
   * runSearchE
@@ -269,6 +316,7 @@ public abstract class Search {
 
     	System.out.println("Efficiency "+ ((float) plen/(closed.size()+1)));
 	    System.out.println("Solution Path\n");
+	    efficiency = (double) plen/(closed.size()+1);
 	    return buf.toString();
     }
 

@@ -24,6 +24,8 @@ public class SearchStateAStarCost extends SearchState {
         ArrayList<SearchState> successorStates = new ArrayList<SearchState>();
         Coords curStatePoint = searcher.currentNode.get_State().point;
         Coords goalStatePoint = searcher.goalNode.get_State().point;
+        String AStarHCostMethod = searcher.AStarHCost;
+
         int w = searcher.tmp.getWidth();
         int h = searcher.tmp.getDepth();
         int [][] tmpHeights = searcher.tmp.getTmap();
@@ -40,7 +42,7 @@ public class SearchStateAStarCost extends SearchState {
                 cost += Math.abs(tmpHeights[y][x + 1] - tmpHeights[y][x]);
             }
 
-            HCost = ManhattanDistance(tempCoord, goalStatePoint);
+            HCost = HCostCompute(tempCoord, goalStatePoint, tmpHeights, AStarHCostMethod);
             SearchState tmpState = new SearchStateAStarCost(cost, tempCoord, HCost);
             successorStates.add(tmpState);
         }
@@ -52,7 +54,7 @@ public class SearchStateAStarCost extends SearchState {
                 cost += Math.abs(tmpHeights[y][x + 1] - tmpHeights[y][x]);
             }
 
-            HCost = ManhattanDistance(tempCoord, goalStatePoint);
+            HCost = HCostCompute(tempCoord, goalStatePoint, tmpHeights, AStarHCostMethod);
             SearchState tmpState = new SearchStateAStarCost(cost, tempCoord, HCost);
             successorStates.add(tmpState);
         }
@@ -64,7 +66,7 @@ public class SearchStateAStarCost extends SearchState {
                 cost += Math.abs(tmpHeights[y][x - 1] - tmpHeights[y][x]);
             }
 
-            HCost = ManhattanDistance(tempCoord, goalStatePoint);
+            HCost = HCostCompute(tempCoord, goalStatePoint, tmpHeights, AStarHCostMethod);
             SearchState tmpState = new SearchStateAStarCost(cost, tempCoord, HCost);
             successorStates.add(tmpState);
         }
@@ -76,7 +78,7 @@ public class SearchStateAStarCost extends SearchState {
                 cost += Math.abs(tmpHeights[y - 1][x] - tmpHeights[y][x]);
             }
 
-            HCost = ManhattanDistance(tempCoord, goalStatePoint);
+            HCost = HCostCompute(tempCoord, goalStatePoint, tmpHeights, AStarHCostMethod);
             SearchState tmpState = new SearchStateAStarCost(cost, tempCoord, HCost);
             successorStates.add(tmpState);
         }
@@ -97,6 +99,50 @@ public class SearchStateAStarCost extends SearchState {
     // Manhattan Distance
     public int ManhattanDistance(Coords curPoint, Coords goalPoint) {
         return Math.abs(curPoint.getx() - goalPoint.getx()) + Math.abs(curPoint.gety() - goalPoint.gety());
+    }
+
+    // Euclidean Distance
+    public int EuclideanDistance(Coords curPoint, Coords goalPoint) {
+        return (int)Math.ceil(Math.sqrt(Math.pow((curPoint.getx() - goalPoint.getx()), 2) +
+                Math.pow((curPoint.gety() - goalPoint.gety()), 2)));
+    }
+
+    // Height Difference
+    public int HeightDifference(Coords curPoint, Coords goalPoint, int[][] tmpHeights) {
+        int curHeight = tmpHeights[curPoint.gety()][curPoint.getx()];
+        int goalHeight = tmpHeights[goalPoint.gety()][goalPoint.getx()];
+        int HCost = 1;
+        if (curHeight < goalHeight) {
+            HCost = goalHeight - curHeight;
+        }
+        return HCost;
+    }
+
+    // Manhattan Distance with Height Difference
+    public int ManhattanWithHeight(Coords curPoint, Coords goalPoint, int[][] tmpHeights) {
+        return ManhattanDistance(curPoint, goalPoint) + HeightDifference(curPoint, goalPoint, tmpHeights);
+    }
+
+    // Euclidean Distance with Height Difference
+    public int EuclideanWithHeight(Coords curPoint, Coords goalPoint, int[][] tmpHeights) {
+        return EuclideanDistance(curPoint, goalPoint) + HeightDifference(curPoint, goalPoint, tmpHeights);
+    }
+
+    public int HCostCompute(Coords curPoint, Coords goalPoint, int[][] tmpHeights, String HCostMethod) {
+        if (HCostMethod == "Manhattan") {
+            return ManhattanDistance(curPoint, goalPoint);
+        } else if (HCostMethod == "Euclidean") {
+            return EuclideanDistance(curPoint, goalPoint);
+        } else if (HCostMethod == "HeightDifference") {
+            return  HeightDifference(curPoint, goalPoint, tmpHeights);
+        } else if (HCostMethod == "ManhattanWithHeight") {
+            return ManhattanWithHeight(curPoint, goalPoint, tmpHeights);
+        } else if (HCostMethod == "EuclideanWithHeight") {
+            return EuclideanWithHeight(curPoint, goalPoint, tmpHeights);
+        } else {
+            return 0;
+        }
+
     }
 
 }
