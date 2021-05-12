@@ -30,7 +30,7 @@ public abstract class Search {
     initNode = new SearchNode(initState,0,0); // create initial node
     initNode.setGlobalCost(0); //change from search2
 
-      goalNode = new SearchNode(goalState, 0);
+      goalNode = new SearchNode(goalState, 0, 0);
       goalNode.setGlobalCost(0);
       tmp = tmpInput;
 	  //change from search1 - print strategy
@@ -197,8 +197,10 @@ public abstract class Search {
       if(strat=="breadthFirst")
         breadthFirst();
       else
-        if(strat=="branchAndBound")
-          branchAndBound();
+        if(strat=="branchAndBound") {
+            System.out.println("Branch and Bound search!");
+            branchAndBound();
+        }
         else AStar();
    }
 
